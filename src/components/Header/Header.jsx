@@ -1,8 +1,8 @@
-// Header.js
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import logo from "../../assets/logo.png"; // Adjust the path to your logo image
 
 const Header = () => {
   const [username, setUsername] = useState(null);
@@ -32,11 +32,11 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white shadow-sm py-2">
-      <div className="container mx-auto flex items-center justify-between">
+    <header className="bg-white shadow-sm py-4">
+      <div className="container mx-auto flex items-center justify-between px-4">
         <div className="flex items-center space-x-4">
-          <Link to="/" className="text-3xl font-bold text-gray-800">
-            Learn-Up
+          <Link to="/" className="flex items-center">
+            <img src={logo} alt="Logo" className="h-8 w-auto" />
           </Link>
           <nav className="hidden md:flex space-x-4">
             <Link
@@ -44,12 +44,6 @@ const Header = () => {
               className="text-gray-600 hover:text-gray-800"
             >
               Categories
-            </Link>
-            <Link to="/business" className="text-gray-600 hover:text-gray-800">
-              Learn-Up Business
-            </Link>
-            <Link to="/teach" className="text-gray-600 hover:text-gray-800">
-              Teach on Learn-Up
             </Link>
           </nav>
         </div>
@@ -63,7 +57,7 @@ const Header = () => {
             <div className="relative">
               <button
                 onClick={toggleDropdown}
-                className="text-gray-600 hover:text-gray-800 flex items-center text-2xl py-2 focus:outline-none"
+                className="text-gray-600 hover:text-gray-800 flex items-center text-lg py-2 focus:outline-none"
               >
                 <FontAwesomeIcon icon={faUser} className="mr-2" />
                 <FontAwesomeIcon icon={faCaretDown} className="ml-2" />
