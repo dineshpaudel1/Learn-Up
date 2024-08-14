@@ -25,10 +25,14 @@ const Login = () => {
 
       const data = await response.json();
       localStorage.setItem("token", data.token); // Save the token in localStorage
+
       localStorage.setItem("username", username); // Save the username in localStorage
       console.log("Login successful", data);
+
       navigate("/"); // Redirect to the homepage
-      window.location.reload(); // Reload the page to update the header
+      window.location.reload();
+      console.log(token);
+      // Reload the page to update the header
     } catch (error) {
       setError(error.message);
       console.error("Error logging in:", error);

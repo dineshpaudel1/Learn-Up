@@ -67,7 +67,7 @@ const Courses = () => {
               />
               <div className="flex justify-between items-center mt-4">
                 <h3 className="font-bold text-lg">{course.courseTitle}</h3>
-                <StarRating defaultRating={4} />{" "}
+                <StarRating defaultRating={2} />{" "}
                 {/* Adjust defaultRating as needed */}
               </div>
               <p className="mt-2 text-gray-600">{course.courseDescription}</p>

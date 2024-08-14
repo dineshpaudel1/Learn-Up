@@ -1,31 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const Category = () => {
+const Categories = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/api/users/category")
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the categories!", error);
+      });
+  }, []);
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold text-gray-800">Popular Categories</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-        <div className="bg-white p-4 shadow-md rounded-md">
-          <h3 className="font-bold text-lg">Development</h3>
-          <p className="mt-2 text-gray-600">
-            Learn programming, web development, and more.
-          </p>
-        </div>
-        <div className="bg-white p-4 shadow-md rounded-md">
-          <h3 className="font-bold text-lg">Design</h3>
-          <p className="mt-2 text-gray-600">
-            Explore graphic design, UX/UI design, and more.
-          </p>
-        </div>
-        <div className="bg-white p-4 shadow-md rounded-md">
-          <h3 className="font-bold text-lg">Marketing</h3>
-          <p className="mt-2 text-gray-600">
-            Master digital marketing, SEO, and more.
-          </p>
-        </div>
+    <>
+      <h2 className="text-2xl font-bold text-gray-800">Trending Categories</h2>
+      <br></br>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {categories.map((category) => (
+          <div
+            key={category.id} // Assuming the category object has an 'id' property
+            className="flex flex-col items-center p-4 border rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300"
+          >
+            <img
+              src={`http://localhost:8080/${category.categoryPhoto}`}
+              alt={category.name}
+              className="w-24 h-24 object-contain mb-4"
+            />
+            <h3 className="text-lg font-semibold">{category.categoryName}</h3>
+          </div>
+        ))}
       </div>
-    </div>
+    </>
   );
 };
 
-export default Category;
+export default Categories;
