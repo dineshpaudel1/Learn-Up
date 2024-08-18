@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useUserInfo from "../hooks/useUserInfo";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+  const navigate = useNavigate()
+  
+  const [userInfo, fetchUserInfo] = useUserInfo()
+  
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,14 +28,17 @@ const Login = () => {
       }
 
       const data = await response.json();
-      localStorage.setItem("token", data.token); // Save the token in localStorage
+      console.log(data);
+      localStorage.setItem("token", data.accessToken); // Save the token in localStorage
 
-      localStorage.setItem("username", username); // Save the username in localStorage
+      localStorage.setItem("username", username);
+      fetchUserInfo();
+      // Save the username in localStorage
       console.log("Login successful", data);
 
-      navigate("/"); // Redirect to the homepage
+      navigate("/") // Redirect to the homepage
       window.location.reload();
-      console.log(token);
+
       // Reload the page to update the header
     } catch (error) {
       setError(error.message);

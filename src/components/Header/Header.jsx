@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/logo.png"; // Adjust the path to your logo image
 import axios from "axios";
+import UserContext from "../context/UserInfoProvider";
 
 const Header = () => {
   const [username, setUsername] = useState(null);
@@ -11,6 +12,13 @@ const Header = () => {
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
+
+  // Get userInfo and role from the context
+  const [userInfo, fetchUserInfo, role] = useContext(UserContext);
+
+  // Print userInfo and role to the console for debugging
+  console.log("UserInfo:", userInfo);
+  console.log("Role:", role);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
@@ -75,13 +83,12 @@ const Header = () => {
                 >
                   {categories.map((category) => (
                     <Link
-                      key={category.id} // Assuming category object has 'id' property
-                      to={`/categories/${category.id}`} // Adjust the link path as needed
+                      key={category.id}
+                      to={`/categories/${category.id}`}
                       className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                       onClick={closeCategoryDropdown}
                     >
-                      {category.categoryName}{" "}
-                      {/* Assuming 'categoryName' is the category's name */}
+                      {category.categoryName}
                     </Link>
                   ))}
                 </div>
@@ -95,6 +102,7 @@ const Header = () => {
             placeholder="Search"
             className="border rounded-full py-1 px-4 text-gray-600"
           />
+
           {username ? (
             <div className="relative">
               <button
@@ -109,13 +117,27 @@ const Header = () => {
                   className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-50"
                   onMouseLeave={closeDropdown}
                 >
-                  <Link
-                    to="/profile"
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                    onClick={closeDropdown}
-                  >
-                    View Profile
-                  </Link>
+                  {/* Conditional rendering for Admin and User links */}
+
+                  {role === "ROLE_ADMIN" && (
+                    <Link
+                      to="/admin"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                      onClick={closeDropdown}
+                    >
+                      Admin Panel
+                    </Link>
+                  )}
+                  {role === "ROLE_USER" && (
+                    <Link
+                      to="/profile"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                      onClick={closeDropdown}
+                    >
+                      Profile
+                    </Link>
+                  )}
+
                   <button
                     onClick={() => {
                       handleLogout();

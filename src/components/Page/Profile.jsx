@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 const Profile = () => {
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [token,setToken] = useState(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,6 +15,8 @@ const Profile = () => {
         setLoading(false);
         return;
       }
+
+      setToken(token)
 
       try {
         const response = await fetch("http://localhost:8080/api/user/info", {
@@ -29,6 +32,7 @@ const Profile = () => {
         }
 
         const data = await response.json();
+        console.log(data)
         setUserInfo(data);
       } catch (error) {
         setError(error.message);
@@ -48,21 +52,21 @@ const Profile = () => {
   return (
     <div>
       <h1>Profile</h1>
-      <img src={userData.name} alt="User Profile" />
+      <img src={userInfo.name} alt="User Profile" />
       <p>
-        <strong>Full Name:</strong> {userData.fullName}
+        <strong>Full Name:</strong> {userInfo.fullName}
       </p>
       <p>
-        <strong>Username:</strong> {userData.username}
+        <strong>Username:</strong> {userInfo.username}
       </p>
       <p>
-        <strong>Email:</strong> {userData.email}
+        <strong>Email:</strong> {userInfo.email}
       </p>
       <p>
-        <strong>Contact:</strong> {userData.contact}
+        <strong>Contact:</strong> {userInfo.contact}
       </p>
       <p>
-        <strong>Role:</strong> {userData.roles.name}
+        <strong>Role:</strong> {userInfo.roles.name}
       </p>
     </div>
   );
