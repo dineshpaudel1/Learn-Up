@@ -28,7 +28,7 @@ const Signup = () => {
 
       const data = await response.json();
       console.log("Signup successful", data);
-      navigate("/signin"); // Redirect to the signin page
+      navigate("/login"); // Redirect to the signin page
     } catch (error) {
       setError(error.message);
       console.error("Error signing up:", error);

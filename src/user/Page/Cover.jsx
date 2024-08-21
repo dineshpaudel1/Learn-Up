@@ -41,7 +41,7 @@ const Cover = () => {
 
   return (
     <div
-      className="relative text-white transition-all duration-1000"
+      className="relative text-white transition-all duration-1000 mt-9"
       style={{
         height: "400px",
         width: "100%",

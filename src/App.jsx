@@ -1,34 +1,39 @@
 import React from "react";
-import Header from "./components/Header/Header";
 import "./index.css";
-import Footer from "./components/Footer/Footer";
-import HomePage from "./components/HomePage/HomePage";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from "./components/Login/Login";
-import Signup from "./components/Signup/Signup";
-import Home from "./components/Page/Home";
-import Profile from "./components/Page/Profile";
-import { UserInfoProvider } from "./components/context/UserInfoProvider";
-import Admin from "./components/Page/Admin";
+import UserLayout from "./UserLayout";
+import Home from "./user/Page/Home";
+import Login from "./user/login/Login";
+import Signup from "./user/Signup/Signup";
+import Profile from "./user/Page/Profile";
+import { UserInfoProvider } from "./user/context/UserInfoProvider";
+import AdminLayout from "./AdminLayout";
+import Dashboard from "./admin/Pages/Dashboard";
+import DHome from "./admin/Pages/DHome";
+import Coursedetail from "./user/Page/Coursedetail";
+
 function App() {
   return (
     <>
       <UserInfoProvider>
         <Router>
-          <div className="App">
-            <Header />
-            <main className="container mx-auto py-4">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/admin" element={<Admin />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/profile" element={<Profile />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        </Router>
+          {" "}
+          {/* Add the Router here */}
+          <Routes>
+            <Route path="/" element={<UserLayout />}>
+              <Route index element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/coursedetail" element={<Coursedetail />} />
+            </Route>
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route path="good" element={<DHome />} />
+              <Route index element={<Dashboard />} />
+            </Route>
+          </Routes>
+        </Router>{" "}
+        {/* Close the Router here */}
       </UserInfoProvider>
     </>
   );

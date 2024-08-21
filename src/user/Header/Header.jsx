@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/logo.png"; // Adjust the path to your logo image
 import axios from "axios";
-import UserContext from "../../user/context/UserInfoProvider";
+import UserContext from "../context/UserInfoProvider";
 
 const Header = () => {
   const [username, setUsername] = useState(null);
@@ -134,7 +134,7 @@ const Header = () => {
                       className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                       onClick={closeDropdown}
                     >
-                      Profile
+                      User Profile
                     </Link>
                   )}
 

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 import axios from "axios";
 import StarRating from "./StarRating"; // Adjust the import path as necessary
 
@@ -49,36 +51,41 @@ const Courses = () => {
         >
           &#8592;
         </button>
-        <div
-          id="courses-container"
-          className="flex overflow-x-auto space-x-6 pb-4 scroll-smooth"
-        >
-          {data.map((course) => (
-            <div
-              key={course.id}
-              className="bg-white p-4 shadow-md rounded-md flex-shrink-0"
-            >
-              <img
-                src={`http://localhost:8080/${course.thumbnail}`} // Adjust URL if necessary
-                className="w-full h-40 object-cover rounded-md"
-                onError={(e) =>
-                  (e.target.src = "/path/to/placeholder-image.jpg")
-                } // Optional: Placeholder image on error
-              />
-              <div className="flex justify-between items-center mt-4">
-                <h3 className="font-bold text-lg">{course.courseTitle}</h3>
-                <StarRating defaultRating={2} />{" "}
-                {/* Adjust defaultRating as needed */}
+        <Link to="coursedetail">
+          <div
+            id="courses-container"
+            className="flex overflow-x-auto space-x-6 pb-4 scroll-smooth"
+          >
+            {data.map((course) => (
+              <div
+                key={course.id}
+                className="bg-white p-4 shadow-md rounded-md flex-shrink-0"
+              >
+                <img
+                  src={`http://localhost:8080/${course.thumbnail}`} // Adjust URL if necessary
+                  className="w-full h-40 object-cover rounded-md"
+                  onError={(e) =>
+                    (e.target.src = "/path/to/placeholder-image.jpg")
+                  } // Optional: Placeholder image on error
+                />
+                <div className="flex justify-between items-center mt-4">
+                  <h3 className="font-bold text-lg">{course.courseTitle}</h3>
+                  <StarRating defaultRating={2} />{" "}
+                  {/* Adjust defaultRating as needed */}
+                </div>
+                <p className="mt-2 text-gray-600">{course.courseDescription}</p>
+                <p className="mt-2 text-gray-500">
+                  Category: {course.category}
+                </p>
+                <p className="mt-2 text-gray-700">Price: ${course.price}</p>
+
+                <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md">
+                  Enroll Now
+                </button>
               </div>
-              <p className="mt-2 text-gray-600">{course.courseDescription}</p>
-              <p className="mt-2 text-gray-500">Category: {course.category}</p>
-              <p className="mt-2 text-gray-700">Price: ${course.price}</p>
-              <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md">
-                Enroll Now
-              </button>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </Link>
         <button
           className="absolute right-0 top-1/2 transform -translate-y-1/2 text-white bg-gray-800 bg-opacity-50 hover:bg-opacity-75 p-2 rounded-full z-10"
           onClick={handleNext}
