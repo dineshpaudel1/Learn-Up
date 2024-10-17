@@ -1,88 +1,50 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
+
 const Sidebar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
-    setUsername(null);
+    Navigate("/");
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen">
       {/* Sidebar */}
-      <aside className="w-64 bg-blue-600 text-white">
+      <aside className="w-64 h-full bg-blue-600 text-white flex flex-col">
         <div className="p-6">
           <Link to="/" className="flex items-center">
             <img src={logo} alt="Logo" className="h-8 w-auto" />
           </Link>
         </div>
-        <nav className="mt-6">
+        <nav className="flex-1 mt-6">
           <ul>
-            <li className="p-4 hover:bg-blue-700">
-              <Link to="dashboard" className="navbar-brand">
-                Dashboard
-              </Link>
-            </li>
-            <li className="p-4 hover:bg-blue-700">
-              <Link to="courseadmin" className="flex items-center">
-                Courses
-              </Link>
-            </li>
-            <li className="p-4 hover:bg-blue-700">
-              <a href="#">Projects</a>
-            </li>
-            <li className="p-4 hover:bg-blue-700">
-              <a href="#">Calendar</a>
-            </li>
-            <li className="p-4 hover:bg-blue-700">
-              <a href="#">Documents</a>
-            </li>
-            <li className="p-4 hover:bg-blue-700">
-              <a href="#">Reports</a>
-            </li>
+            <Link to="dashboard">
+              <li className="p-4 hover:bg-blue-700">Dashboard</li>
+            </Link>
+            <Link to="courseadmin">
+              <li className="p-4 hover:bg-blue-700">Courses</li>
+            </Link>
+            <Link to="studentadmin">
+              <li className="p-4 hover:bg-blue-700">Students</li>
+            </Link>
+            <Link to="teacheradmin">
+              <li className="p-4 hover:bg-blue-700">Teachers</li>
+            </Link>
+            <Link to="settingadmin">
+              <li className="p-4 hover:bg-blue-700">Settings</li>
+            </Link>
           </ul>
         </nav>
-
         <div className="p-6">
-          <Link to="/" className="flex items-center">
-            <button
-              className="w-full bg-blue-800 py-2 rounded mt-9"
-              onClick={() => {
-                handleLogout();
-                closeDropdown();
-              }}
-            >
-              Logout
-            </button>
-          </Link>
+          <button className="w-full bg-red-700 py-2" onClick={handleLogout}>
+            <Link to="/">
+              <li>Logout</li>
+            </Link>
+          </button>
         </div>
       </aside>
-
-      {/* Main Content */}
-      <div className="flex-1 p-10 text-gray-700">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-          <div className="flex items-center">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="border border-gray-300 p-2 rounded"
-            />
-            <button className="ml-4 p-2 bg-blue-600 text-white rounded">
-              Notifications
-            </button>
-            <div className="ml-4 flex items-center">
-              <img
-                className="w-10 h-10 rounded-full"
-                src="https://via.placeholder.com/150"
-                alt="Profile"
-              />
-              <span className="ml-2">Dinesh</span>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

@@ -1,12 +1,16 @@
 import React from "react";
-import Sidebar from "./components/Sidebar/Sidebar";
+import Sidebar from "././components/Sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
+import AdminNav from "./components/Sidebar/AdminNav";
 
 const AdminLayout = () => {
   return (
-    <div>
+    <div className="flex">
       <Sidebar />
-      <Outlet />
+      <main className="flex-1 bg-gray-100">
+        <AdminNav />
+        <Outlet />
+      </main>
     </div>
   );
 };

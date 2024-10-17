@@ -24,7 +24,7 @@ const Courses = () => {
       setLoading(false);
     }
   };
-
+  
   useEffect(() => {
     fetchData();
   }, []);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useUserInfo from "../hooks/useUserInfo";
+import useUserInfo from "../../user/hooks/useUserInfo";
 
 const Login = () => {
   const [username, setUsername] = useState("");
