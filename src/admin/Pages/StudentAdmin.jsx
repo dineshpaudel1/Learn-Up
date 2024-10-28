@@ -1,34 +1,46 @@
-import React from "react";
-import { FaEdit, FaTrash, FaPlus } from "react-icons/fa"; // Import icons
+import React, { useEffect, useState } from "react";
+import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
+import { fetchAllUserInfo } from "../../components/Apis/UserApi"; // Import the fetch function
+import placeholderPhoto from "../../assets/teacher.webp"; // Placeholder image
 
-const students = [
-  {
-    id: 1,
-    photo: "https://via.placeholder.com/150", // Placeholder student image
-    fullName: "John Doe",
-    username: "johndoe",
-    email: "johndoe@example.com",
-    contact: "123-456-7890",
-    password: "password123", // Not displayed in the table
-  },
-  {
-    id: 2,
-    photo: "https://via.placeholder.com/150", // Placeholder student image
-    fullName: "Jane Smith",
-    username: "janesmith",
-    email: "janesmith@example.com",
-    contact: "987-654-3210",
-    password: "password456", // Not displayed in the table
-  },
-];
+const UserAdmin = () => {
+  const [users, setUsers] = useState([]);
 
-const StudentAdmin = () => {
+  // Fetch user data on component mount
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        // Retrieve the access token from localStorage
+        const accessToken = localStorage.getItem("accessToken");
+        if (!accessToken) {
+          console.error("No access token found");
+          return;
+        }
+
+        // Fetch the user data using the access token
+        const userData = await fetchAllUserInfo(accessToken);
+
+        // Map user data to add a placeholder photo if no photo is available
+        const formattedUsers = userData.map((user) => ({
+          ...user,
+          photo: user.photo || placeholderPhoto, // Use user photo or placeholder
+        }));
+
+        setUsers(formattedUsers);
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    };
+
+    getUsers();
+  }, []);
+
   return (
     <div className="p-10">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold">Manage Students</h2>
+        <h2 className="text-3xl font-bold">Manage Users</h2>
         <button className="bg-green-500 text-white p-3 rounded flex items-center">
-          <FaPlus className="mr-2" /> Add Student
+          <FaPlus className="mr-2" /> Add User
         </button>
       </div>
 
@@ -44,19 +56,19 @@ const StudentAdmin = () => {
           </tr>
         </thead>
         <tbody>
-          {students.map((student) => (
-            <tr key={student.id} className="border-t">
+          {users.map((user) => (
+            <tr key={user.id} className="border-t">
               <td className="px-4 py-2">
                 <img
-                  src={student.photo}
-                  alt={student.fullName}
+                  src={user.photo} // Use the user-specific photo
+                  alt={user.fullName}
                   className="w-20 h-20 object-cover rounded"
                 />
               </td>
-              <td className="px-4 py-2">{student.fullName}</td>
-              <td className="px-4 py-2">{student.username}</td>
-              <td className="px-4 py-2">{student.email}</td>
-              <td className="px-4 py-2">{student.contact}</td>
+              <td className="px-4 py-2">{user.fullName}</td>
+              <td className="px-4 py-2">{user.username}</td>
+              <td className="px-4 py-2">{user.email}</td>
+              <td className="px-4 py-2">{user.contact}</td>
               <td className="px-4 py-2 flex space-x-2">
                 <button className="bg-blue-500 text-white p-2 rounded flex items-center">
                   <FaEdit className="mr-1" /> Edit
@@ -73,4 +85,4 @@ const StudentAdmin = () => {
   );
 };
 
-export default StudentAdmin;
+export default UserAdmin;

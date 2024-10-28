@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { signupUser } from "../Apis/UserApi"; // Import the signup API call
 
 const Signup = () => {
   const [fullName, setFullName] = useState("");
@@ -14,21 +15,16 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8080/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ fullName, username, email, contact, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Signup failed");
-      }
-
-      const data = await response.json();
+      // Calling the API function from UserApi
+      const data = await signupUser(
+        fullName,
+        username,
+        email,
+        contact,
+        password
+      );
       console.log("Signup successful", data);
-      navigate("/login"); // Redirect to the signin page
+      navigate("/login"); // Redirect to the login page after successful signup
     } catch (error) {
       setError(error.message);
       console.error("Error signing up:", error);

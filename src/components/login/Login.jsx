@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../Apis/UserApi"; // Importing loginUser function
 import useUserInfo from "../../user/hooks/useUserInfo";
 
 const Login = () => {
@@ -14,36 +15,16 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const data = await loginUser(username, password); // Using the API function from UserApi
 
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
-
-      const data = await response.json();
-      console.log(data);
-      {
-        if (!data) {
-          navigate("/");
-        }
-      }
       localStorage.setItem("token", data.accessToken); // Save the token in localStorage
+      localStorage.setItem("username", username); // Save the username in localStorage
 
-      localStorage.setItem("username", username);
-      fetchUserInfo();
-      // Save the username in localStorage
+      fetchUserInfo(); // Optionally fetch user info after login
       console.log("Login successful", data);
 
       navigate("/"); // Redirect to the homepage
-      window.location.reload();
-
-      // Reload the page to update the header
+      window.location.reload(); // Reload the page to update the header
     } catch (error) {
       setError(error.message);
       console.error("Error logging in:", error);

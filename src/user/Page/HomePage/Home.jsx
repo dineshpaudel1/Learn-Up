@@ -2,6 +2,7 @@ import React from "react";
 import Courses from "./Courses";
 import Cover from "./Cover";
 import Category from "./Category";
+import TeacherSection from "./TeacherSection";
 
 const Home = () => {
   return (
@@ -9,6 +10,7 @@ const Home = () => {
       <Cover />
       <Courses />
       <Category />
+      <TeacherSection />
     </div>
   );
 };

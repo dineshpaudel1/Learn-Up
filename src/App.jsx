@@ -2,18 +2,21 @@ import React from "react";
 import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UserLayout from "./UserLayout";
-import Home from "./user/Page/Home";
+import Home from "./user/Page/HomePage/Home";
 import Login from "./components/login/Login";
 import Signup from "./components/Signup/Signup";
-import Profile from "./user/Page/Profile";
+import Profile from "./user/Page/UserProfile/Profile";
 import { UserInfoProvider } from "./user/context/UserInfoProvider";
 import AdminLayout from "./AdminLayout"; // Update the path if necessary
 import Dashboard from "./admin/Pages/Dashboard";
-import Coursedetail from "./user/Page/Coursedetail";
+import Coursedetail from "./user/Page/CourseDetail/Coursedetail";
 import CourseAdmin from "./admin/Pages/CourseAdmin";
 import StudentAdmin from "./admin/Pages/StudentAdmin";
 import SettingAdmin from "./admin/Pages/SettingAdmin";
 import TeacherAdmin from "./admin/Pages/TeacherAdmin";
+import EnrollmentUser from "./user/Page/EnrollmentUser/EnrollmentUser";
+import Sewa from "./user/Page/EnrollmentUser/Payment";
+import TeacherSection from "./user/Page/HomePage/TeacherSection";
 
 function App() {
   return (
@@ -26,7 +29,10 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="coursedetail" element={<Coursedetail />} />
+            <Route path="/coursedetail/:id" element={<Coursedetail />} />
+            <Route path="enrollmentuser" element={<EnrollmentUser />} />
+            <Route path="sewa" element={<Sewa />} />
+            <Route path="teachersection" element={<TeacherSection />} />
           </Route>
 
           {/* Admin routes */}
