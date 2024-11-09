@@ -26,11 +26,8 @@ const Sidebar = () => {
             <Link to="courseadmin">
               <li className="p-4 hover:bg-blue-700">Courses</li>
             </Link>
-            <Link to="studentadmin">
+            <Link to="useradmin">
               <li className="p-4 hover:bg-blue-700">User</li>
-            </Link>
-            <Link to="teacheradmin">
-              <li className="p-4 hover:bg-blue-700">Teachers</li>
             </Link>
             <Link to="settingadmin">
               <li className="p-4 hover:bg-blue-700">Settings</li>
@@ -38,7 +35,10 @@ const Sidebar = () => {
           </ul>
         </nav>
         <div className="p-6">
-          <button className="w-full bg-red-500 py-3" onClick={handleLogout}>
+          <button
+            className="w-[170px] bg-red-500 py-3 rounded-[5px]"
+            onClick={handleLogout}
+          >
             <Link to="/">Logout</Link>
           </button>
         </div>

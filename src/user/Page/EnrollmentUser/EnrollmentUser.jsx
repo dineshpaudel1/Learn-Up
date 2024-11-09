@@ -18,9 +18,24 @@ const EnrollmentUser = () => {
   };
 
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null); // Track selected payment method
 
   const handleESewaPayment = () => {
+    setSelectedPaymentMethod("eSewa");
     navigate("/sewa", { state: { course } });
+  };
+
+  const handleKhaltiPayment = () => {
+    setSelectedPaymentMethod("Khalti");
+    // Navigate or set up Khalti payment if needed
+  };
+
+  const handleEnroll = () => {
+    if (!selectedPaymentMethod) {
+      alert("Please select a payment method before enrolling.");
+    } else {
+      alert("Enrollment successful!");
+    }
   };
 
   const videoLink = videoLinks[course?.courseTitle] || null;
@@ -98,18 +113,29 @@ const EnrollmentUser = () => {
                 <div>
                   <button
                     onClick={handleESewaPayment}
-                    className="w-70 bg-white-600 hover:bg-green-700 text-white py-2 rounded transition duration-300"
+                    className={`w-70 bg-white-600 ${
+                      selectedPaymentMethod === "eSewa"
+                        ? "bg-green-700"
+                        : "hover:bg-green-700"
+                    } text-white py-2 rounded transition duration-300`}
                   >
                     <img
                       src={esewaimg}
-                      alt={course.courseTitle || "Course Thumbnail"}
+                      alt="eSewa"
                       className="w-70 h-10 object-cover rounded-md mb-2 px-9"
                     />
                   </button>
-                  <button className="w-70 bg-white-600 hover:bg-purple-700 text-white py-2 rounded transition duration-300">
+                  <button
+                    onClick={handleKhaltiPayment}
+                    className={`w-70 bg-white-600 ${
+                      selectedPaymentMethod === "Khalti"
+                        ? "bg-purple-700"
+                        : "hover:bg-purple-700"
+                    } text-white py-2 rounded transition duration-300`}
+                  >
                     <img
                       src={khaltiimg}
-                      alt={course.courseTitle || "Course Thumbnail"}
+                      alt="Khalti"
                       className="w-70 h-10 object-cover rounded-md mb-2 px-9"
                     />
                   </button>
@@ -119,7 +145,7 @@ const EnrollmentUser = () => {
           </div>
         )}
         <button
-          onClick={() => alert("Enrollment successful!")}
+          onClick={handleEnroll}
           className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded transition duration-300"
         >
           Enroll

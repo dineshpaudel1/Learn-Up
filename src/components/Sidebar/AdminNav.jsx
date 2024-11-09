@@ -19,7 +19,7 @@ const AdminNav = () => {
 
       try {
         const data = await fetchUserInfo(token);
-        console.log("Response Data:", data); // Log the received data
+        // console.log("Response Data:", data); // Log the received data
         setUserInfo(data);
       } catch (error) {
         console.error("Fetch Error:", error); // Log the fetch error

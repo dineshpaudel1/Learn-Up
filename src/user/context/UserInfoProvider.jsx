@@ -23,7 +23,7 @@ export const UserInfoProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       setUserInfo(data);
       setRole(data.roles.name);
     } catch (err) {

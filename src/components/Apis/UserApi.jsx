@@ -61,7 +61,7 @@ export const signupUser = async (
   contact,
   password
 ) => {
-  const response = await fetch(`${BASE_URL}/register`, {
+  const response = await fetch(`${BASE_URL}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -147,6 +147,25 @@ export const updateUserPhoto = async (photoFile, accessToken) => {
     console.error("Error updating user photo:", error);
     throw new Error(
       error.response?.data?.message || "Failed to update user photo"
+    );
+  }
+};
+
+export const fetchTotalUserCount = async (accessToken) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/user/all`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    // Assuming response.data is an array of users
+    const userCount = response.data.length;
+    return userCount;
+  } catch (error) {
+    console.error("Error fetching total user count:", error);
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch user count"
     );
   }
 };

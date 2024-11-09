@@ -11,12 +11,12 @@ import AdminLayout from "./AdminLayout"; // Update the path if necessary
 import Dashboard from "./admin/Pages/Dashboard";
 import Coursedetail from "./user/Page/CourseDetail/Coursedetail";
 import CourseAdmin from "./admin/Pages/CourseAdmin";
-import StudentAdmin from "./admin/Pages/StudentAdmin";
 import SettingAdmin from "./admin/Pages/SettingAdmin";
 import TeacherAdmin from "./admin/Pages/TeacherAdmin";
 import EnrollmentUser from "./user/Page/EnrollmentUser/EnrollmentUser";
-import Sewa from "./user/Page/EnrollmentUser/Payment";
 import TeacherSection from "./user/Page/HomePage/TeacherSection";
+import EsewaPayment from "./user/Page/EsewaPayment/EsewaPayment";
+import UserAdmin from "./admin/Pages/UserAdmin";
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
             <Route path="profile" element={<Profile />} />
             <Route path="/coursedetail/:id" element={<Coursedetail />} />
             <Route path="enrollmentuser" element={<EnrollmentUser />} />
-            <Route path="sewa" element={<Sewa />} />
+            <Route path="sewa" element={<EsewaPayment />} />
             <Route path="teachersection" element={<TeacherSection />} />
           </Route>
 
@@ -40,9 +40,9 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="courseadmin" element={<CourseAdmin />} />
-            <Route path="studentadmin" element={<StudentAdmin />} />
             <Route path="teacheradmin" element={<TeacherAdmin />} />
             <Route path="settingadmin" element={<SettingAdmin />} />
+            <Route path="useradmin" element={<UserAdmin />} />
           </Route>
         </Routes>
       </BrowserRouter>

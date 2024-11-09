@@ -1,9 +1,9 @@
 import React from "react";
-import TeacherImage from "../../../assets/teacher.webp";
+import TeacherImage from "../../../assets/teacher.png";
 
 const TeacherSection = () => {
   return (
-    <div className="flex items-center justify-center min-h-[500px]">
+    <div className="bg-custom-yellow mt-5 flex items-center justify-center min-h-[500px]">
       {/* Image Section */}
       <div className="relative w-64 h-64 bg-yellow-700 flex items-center justify-center rounded-md">
         <img

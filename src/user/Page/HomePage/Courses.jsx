@@ -39,7 +39,11 @@ const Courses = () => {
 
   return (
     <div className="relative container mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold text-gray-800">Our Courses</h2>
+      <div className="text-center">
+        <h2 className="text-3xl font-bold text-gray-800">Our Courses</h2>
+        <div className="mx-auto flex mt-2 w-16 h-1 bg-[#8594] rounded-full"></div>
+      </div>
+
       <div className="relative flex items-center">
         <button
           className="absolute left-0 top-1/2 transform -translate-y-1/2 text-white bg-gray-800 bg-opacity-50 hover:bg-opacity-75 p-2 rounded-full z-10"
