@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import { fetchAllUserInfo } from "../../components/Apis/UserApi"; // Import the fetch function
 import placeholderPhoto from "../../assets/teacher.webp"; // Placeholder image
+import AddUserModal from "../Model/AddUserModel";
 
 const UserAdmin = () => {
   const [users, setUsers] = useState([]);
+  const [showAddModal, setShowAddModal] = useState(false); // State to control AddUserModal visibility
 
   // Fetch user data on component mount
   useEffect(() => {
@@ -36,7 +38,10 @@ const UserAdmin = () => {
     <div className="p-10">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold">Manage Users</h2>
-        <button className="bg-green-500 text-white p-3 rounded flex items-center">
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="bg-green-500 text-white p-3 rounded flex items-center"
+        >
           <FaPlus className="mr-2" /> Add User
         </button>
       </div>
@@ -52,7 +57,6 @@ const UserAdmin = () => {
               <th className="px-4 py-2">Email</th>
               <th className="px-4 py-2">Contact</th>
               <th className="px-4 py-2">Roles</th>
-              <th className="px-4 py-2">Enabled</th>
               <th className="px-4 py-2">Actions</th>
             </tr>
           </thead>
@@ -75,13 +79,7 @@ const UserAdmin = () => {
                     ? user.roles.map((role) => role.name).join(", ")
                     : "No Roles"}
                 </td>
-                <td className="px-4 py-2">
-                  {user.enabled ? (
-                    <span className="text-green-600 font-bold">Enabled</span>
-                  ) : (
-                    <span className="text-red-600 font-bold">Disabled</span>
-                  )}
-                </td>
+
                 <td className="px-4 py-2 flex space-x-2">
                   <button className="bg-blue-500 text-white p-2 rounded flex items-center">
                     <FaEdit className="mr-1" /> Edit
@@ -95,6 +93,12 @@ const UserAdmin = () => {
           </tbody>
         </table>
       </div>
+      {showAddModal && (
+        <AddUserModal
+          isOpen={showAddModal} // Pass as isOpen
+          onClose={() => setShowAddModal(false)}
+        />
+      )}
     </div>
   );
 };

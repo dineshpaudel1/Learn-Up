@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCaretDown } from "@fortawesome/free-solid-svg-icons";
-import logo from "../../assets/logo.png"; // Adjust the path to your logo image
-import axios from "axios";
+import logo from "../../assets/logo.png";
 import UserContext from "../../user/context/UserInfoProvider";
+import { fetchCategories, fetchCategoryById } from "../Apis/CategoryApi";
 
 const Header = () => {
   const [username, setUsername] = useState(null);
@@ -16,11 +16,6 @@ const Header = () => {
   // Get userInfo and role from the context
   const [userInfo, fetchUserInfo, role] = useContext(UserContext);
   localStorage.setItem("role", role);
-  const rrr = localStorage.getItem(role);
-  // console.log("machikne", rrr);
-
-  // Print userInfo and role to the console for debugging
-  console.log("UserInfo:", userInfo);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
@@ -28,16 +23,24 @@ const Header = () => {
       setUsername(storedUsername);
     }
 
-    // Fetch categories
-    axios
-      .get("http://localhost:8080/api/users/category")
-      .then((response) => {
-        setCategories(response.data);
+    // Fetch categories using the new API function
+    fetchCategories()
+      .then((data) => {
+        setCategories(data);
       })
-      .catch((error) => {
-        console.error("There was an error fetching the categories!", error);
-      });
+      .catch((error) => console.error(error));
   }, []);
+
+  // Function to fetch category by ID and navigate to its page
+  const handleCategoryClick = (categoryId) => {
+    fetchCategoryById(categoryId)
+      .then((category) => {
+        navigate(`/categories/${categoryId}`, {
+          state: { category },
+        });
+      })
+      .catch((error) => console.error(error));
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -85,14 +88,13 @@ const Header = () => {
                   onMouseLeave={closeCategoryDropdown}
                 >
                   {categories.map((category) => (
-                    <Link
+                    <button
                       key={category.id}
-                      to={`/categories/${category.id}`}
-                      className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                      onClick={closeCategoryDropdown}
+                      onClick={() => handleCategoryClick(category.id)}
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
                     >
                       {category.categoryName}
-                    </Link>
+                    </button>
                   ))}
                 </div>
               )}
@@ -120,8 +122,6 @@ const Header = () => {
                   className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-50"
                   onMouseLeave={closeDropdown}
                 >
-                  {/* Conditional rendering for Admin and User links */}
-
                   {role === "ROLE_ADMIN" && (
                     <Link
                       to="/admin"
@@ -140,7 +140,6 @@ const Header = () => {
                       Profile
                     </Link>
                   )}
-
                   <button
                     onClick={() => {
                       handleLogout();

@@ -7,7 +7,6 @@ import {
 } from "../../components/Apis/CourseApi";
 import AddCourseModal from "../Model/AddCourseModel";
 import EditCourseModal from "../Model/EditCourseModel";
-
 const CourseAdmin = () => {
   const [courses, setCourses] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);

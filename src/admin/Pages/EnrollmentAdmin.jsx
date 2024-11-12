@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import axios from "axios";
+import AddUserModal from "../Model/AddUserModel";
 
+// import AddUserModel from "../Model/AddUserModel";
 const EnrollmentAdmin = () => {
   const [enrolledUsers, setEnrolledUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const token = localStorage.getItem("token"); // Retrieve token from localStorage
+  const [showAddModal, setShowAddModal] = useState(false); // State to control AddUserModal visibility
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchEnrolledUsers = async () => {
@@ -18,9 +22,8 @@ const EnrollmentAdmin = () => {
             },
           }
         );
-
         if (response.status === 200) {
-          setEnrolledUsers(response.data); // Assuming response data contains a list of enrolled users
+          setEnrolledUsers(response.data);
         } else {
           setError("Failed to fetch enrolled users.");
         }
@@ -35,53 +38,78 @@ const EnrollmentAdmin = () => {
     fetchEnrolledUsers();
   }, [token]);
 
+  const handleAddUser = (newUser) => {
+    setEnrolledUsers([...enrolledUsers, newUser]);
+    setShowAddModal(false);
+  };
+
+  const handleEditUser = (id) => {
+    // Add logic to edit user here
+    console.log("Edit user with ID:", id);
+  };
+
+  const handleDeleteUser = (id) => {
+    setEnrolledUsers(enrolledUsers.filter((user) => user.id !== id));
+  };
+
   if (loading) return <p>Loading enrolled users...</p>;
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="p-6 bg-gray-100">
-      <h2 className="text-2xl font-bold mb-4">Enrolled Users</h2>
-      {enrolledUsers.length > 0 ? (
-        <div className="bg-white rounded-lg shadow-md p-4">
-          <table className="min-w-full bg-white">
-            <thead>
-              <tr>
-                <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Username
-                </th>
-                <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Course Title
-                </th>
-                <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Instructor
-                </th>
-                <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Role
-                </th>
+    <div className="p-10">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-bold">Enrolled Users</h2>
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="bg-green-500 text-white p-3 rounded flex items-center"
+        >
+          <FaPlus className="mr-2" /> Make Enroll
+        </button>
+      </div>
+
+      <div className="overflow-x-auto w-full max-w-[930px] max-h-[430px]">
+        <table className="min-w-full table-auto bg-white shadow-md rounded-lg">
+          <thead>
+            <tr className="bg-gray-200 text-gray-700">
+              <th className="px-4 py-2">Username</th>
+              <th className="px-4 py-2">Course Title</th>
+              <th className="px-4 py-2">Instructor</th>
+              <th className="px-4 py-2">Role</th>
+              <th className="px-4 py-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {enrolledUsers.map((user) => (
+              <tr key={user.id} className="border-t">
+                <td className="px-4 py-2">{user.username}</td>
+                <td className="px-4 py-2">{user.courseTitle}</td>
+                <td className="px-4 py-2">{user.instructor}</td>
+                <td className="px-4 py-2">{user.role}</td>
+                <td className="px-4 py-2 flex space-x-2">
+                  <button
+                    onClick={() => handleEditUser(user.id)}
+                    className="bg-blue-500 text-white p-2 rounded flex items-center"
+                  >
+                    <FaEdit className="mr-1" /> Edit
+                  </button>
+                  <button
+                    onClick={() => handleDeleteUser(user.id)}
+                    className="bg-red-500 text-white p-2 rounded flex items-center"
+                  >
+                    <FaTrash className="mr-1" /> Delete
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {enrolledUsers.map((user, index) => (
-                <tr key={index}>
-                  <td className="px-6 py-4 border-b border-gray-200 text-sm">
-                    {user.username}
-                  </td>
-                  <td className="px-6 py-4 border-b border-gray-200 text-sm">
-                    {user.courseTitle}
-                  </td>
-                  <td className="px-6 py-4 border-b border-gray-200 text-sm">
-                    {user.instructor}
-                  </td>
-                  <td className="px-6 py-4 border-b border-gray-200 text-sm">
-                    {user.role}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <p>No enrolled users found.</p>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {showAddModal && (
+        <AddUserModal
+          isOpen={showAddModal} // Pass as isOpen
+          onClose={() => setShowAddModal(false)}
+        />
       )}
     </div>
   );

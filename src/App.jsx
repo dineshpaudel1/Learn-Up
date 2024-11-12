@@ -18,6 +18,7 @@ import TeacherSection from "./user/Page/HomePage/TeacherSection";
 import EsewaPayment from "./user/Page/EsewaPayment/EsewaPayment";
 import UserAdmin from "./admin/Pages/UserAdmin";
 import EnrollmentAdmin from "./admin/Pages/EnrollmentAdmin";
+import CategoryInfo from "./user/Page/CategoryInfo/CategoryInfo";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             <Route path="enrollmentuser" element={<EnrollmentUser />} />
             <Route path="sewa" element={<EsewaPayment />} />
             <Route path="teachersection" element={<TeacherSection />} />
+            <Route path="/categories/:id" element={<CategoryInfo />} />{" "}
           </Route>
 
           {/* Admin routes */}
