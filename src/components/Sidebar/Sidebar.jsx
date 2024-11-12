@@ -29,6 +29,9 @@ const Sidebar = () => {
             <Link to="useradmin">
               <li className="p-4 hover:bg-blue-700">User</li>
             </Link>
+            <Link to="enrollmentadmin">
+              <li className="p-4 hover:bg-blue-700">Enrollment</li>
+            </Link>
             <Link to="settingadmin">
               <li className="p-4 hover:bg-blue-700">Settings</li>
             </Link>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import notification from "../../assets/notifi.webp";
 import { fetchUserInfo } from "../../components/Apis/UserApi"; // Adjust path if necessary
+import { Link } from "react-router-dom";
 
 const AdminNav = () => {
   const [userInfo, setUserInfo] = useState({});
@@ -53,20 +54,22 @@ const AdminNav = () => {
               className="ml-4 p-2 w-10 h-10"
             />
             <div className="ml-4 flex items-center">
-              {userInfo.name ? (
-                <img
-                  className="w-10 h-10 rounded-full"
-                  src={"http://localhost:8080" + userInfo.name}
-                  alt="Profile"
-                />
-              ) : (
-                <img
-                  className="w-10 h-10 rounded-full"
-                  src="../../assets/default-profile.png"
-                  alt="Default Profile"
-                />
-              )}
-              <span className="ml-2">{userInfo.username || "Guest"}</span>
+              <Link to="settingadmin" className="flex items-center">
+                {userInfo.name ? (
+                  <img
+                    className="w-10 h-10 rounded-full"
+                    src={"http://localhost:8080" + userInfo.name}
+                    alt="Profile"
+                  />
+                ) : (
+                  <img
+                    className="w-10 h-10 rounded-full"
+                    src="../../assets/default-profile.png"
+                    alt="Default Profile"
+                  />
+                )}
+                <span className="ml-2">{userInfo.username || "Guest"}</span>
+              </Link>
             </div>
           </div>
         </div>

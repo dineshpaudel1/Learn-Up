@@ -1,32 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchCourses } from "../../../components/Apis/CourseApi";
+import axios from "axios";
+import StarRating from "../StarRating";
 
 const CourseDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [course, setCourse] = useState(null);
+  const [recommendedCourses, setRecommendedCourses] = useState([]);
+
+  const handlePrev = () => {
+    const container = document.getElementById("recommended-courses-container");
+    container.scrollLeft -= 300;
+  };
+
+  const handleNext = () => {
+    const container = document.getElementById("recommended-courses-container");
+    container.scrollLeft += 300;
+  };
+
+  const getCourseAndRecommendations = async (courseId) => {
+    const courses = await fetchCourses();
+    const selectedCourse = courses.find(
+      (course) => course.id === parseInt(courseId)
+    );
+    setCourse(selectedCourse || {});
+
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/courses/${courseId}/recommendations`
+      );
+      setRecommendedCourses(response.data);
+    } catch (error) {
+      console.error("Error fetching recommended courses:", error);
+    }
+  };
 
   useEffect(() => {
-    const getCourse = async () => {
-      const courses = await fetchCourses();
-      const selectedCourse = courses.find(
-        (course) => course.id === parseInt(id)
-      );
-      setCourse(selectedCourse || {});
-    };
-
-    getCourse();
+    getCourseAndRecommendations(id);
   }, [id]);
 
-  // Enroll handler to check login status
+  const handleRecommendedCourseClick = (courseId) => {
+    navigate(`/course/${courseId}`);
+    getCourseAndRecommendations(courseId); // Update course details immediately
+  };
+
   const handleEnroll = () => {
     const accessToken = localStorage.getItem("token");
     if (accessToken) {
-      // If user is logged in, navigate to enrollment page with course details
       navigate("/enrollmentuser", { state: { course } });
     } else {
-      // If user is not logged in, navigate to login page
       navigate("/login");
     }
   };
@@ -82,6 +106,74 @@ const CourseDetail = () => {
             </button>
           </aside>
         </div>
+
+        {/* Recommended Courses Section */}
+        {recommendedCourses.length > 0 && (
+          <section className="mt-8 container mx-auto px-4 py-8">
+            <h2 className="text-2xl font-bold text-center mb-4">
+              Recommended Courses
+            </h2>
+            <div className="relative flex items-center">
+              {/* Previous Button */}
+              <button
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 text-white bg-gray-800 bg-opacity-50 hover:bg-opacity-75 p-2 rounded-full z-10"
+                onClick={handlePrev}
+              >
+                &#8592;
+              </button>
+
+              {/* Horizontal Scrolling Container */}
+              <div
+                id="recommended-courses-container"
+                className="flex overflow-x-auto space-x-6 pb-4 scroll-smooth"
+              >
+                {recommendedCourses.map((recommendedCourse) => (
+                  <div
+                    key={recommendedCourse.id}
+                    className="bg-white p-4 shadow-md rounded-md flex-shrink-0 w-64 h-80"
+                    onClick={() =>
+                      handleRecommendedCourseClick(recommendedCourse.id)
+                    }
+                  >
+                    <img
+                      src={`http://localhost:8080/${recommendedCourse.thumbnail}`}
+                      alt={recommendedCourse.courseTitle}
+                      className="w-full h-32 object-cover rounded-md"
+                      onError={(e) =>
+                        (e.target.src = "/path/to/placeholder-image.jpg")
+                      }
+                    />
+                    <div className="mt-4">
+                      <h3 className="font-bold text-lg line-clamp-1">
+                        {recommendedCourse.courseTitle}
+                      </h3>
+                    </div>
+                    <p className="mt-2 text-gray-600 text-sm line-clamp-2">
+                      {recommendedCourse.courseDescription}
+                    </p>
+                    <div className="flex items-center justify-between mt-2">
+                      <button className="bg-blue-600 text-white py-1 px-4 rounded">
+                        View Course
+                      </button>
+                      <StarRating defaultRating={recommendedCourse.rating} />
+                    </div>
+                    <p className="text-gray-700 text-sm mt-2">
+                      NRS {recommendedCourse.price}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Next Button */}
+              <button
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 text-white bg-gray-800 bg-opacity-50 hover:bg-opacity-75 p-2 rounded-full z-10"
+                onClick={handleNext}
+              >
+                &#8594;
+              </button>
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );

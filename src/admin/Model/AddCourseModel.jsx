@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa"; // Import close icon
 import { addCourse } from "../../components/Apis/CourseApi"; // Import the addCourse function
 
@@ -11,8 +11,33 @@ const AddCourseModal = ({ isOpen, onClose, refreshCourses }) => {
   const [rating, setRating] = useState("");
   const [instructor, setInstructor] = useState("");
   const [language, setLanguage] = useState("");
+  const [categories, setCategories] = useState([]); // State to hold categories
+  const [loading, setLoading] = useState(true); // State for loading status
+  const [error, setError] = useState(null); // State for error handling
 
   const accessToken = localStorage.getItem("token");
+
+  // Fetch categories from the API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/users/category"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+        const data = await response.json();
+        setCategories(data); // Set the categories in the state
+      } catch (error) {
+        setError(error.message); // Handle any errors
+      } finally {
+        setLoading(false); // Set loading to false once the fetch completes
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -89,13 +114,25 @@ const AddCourseModal = ({ isOpen, onClose, refreshCourses }) => {
             <label className="block text-sm font-medium text-gray-700">
               Category
             </label>
-            <input
-              type="text"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-              className="w-full mt-1 p-2 border rounded"
-            />
+            {loading ? (
+              <p>Loading categories...</p>
+            ) : error ? (
+              <p className="text-red-500">{error}</p>
+            ) : (
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                required
+                className="w-full mt-1 p-2 border rounded"
+              >
+                <option value="">Select a category</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.categoryName}>
+                    {category.categoryName}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
           <div>

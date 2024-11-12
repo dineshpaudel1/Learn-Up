@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { FaAngleUp, FaAngleDown } from "react-icons/fa";
 import TeacherImage from "../../../assets/teacher.webp";
 import esewaimg from "../../../assets/payment logo/esewa.jpeg";
@@ -10,6 +11,8 @@ const EnrollmentUser = () => {
   const navigate = useNavigate();
   const { course } = location.state || {};
   const loggedInUsername = localStorage.getItem("username") || "Not available";
+  const token = localStorage.getItem("token"); // Retrieve the access token
+  const userrole = localStorage.getItem("role"); // Get the role from localStorage
 
   const videoLinks = {
     "The Complete Python Bootcamp From Zero to Hero in Python":
@@ -18,7 +21,7 @@ const EnrollmentUser = () => {
   };
 
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null); // Track selected payment method
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
 
   const handleESewaPayment = () => {
     setSelectedPaymentMethod("eSewa");
@@ -30,11 +33,43 @@ const EnrollmentUser = () => {
     // Navigate or set up Khalti payment if needed
   };
 
-  const handleEnroll = () => {
-    if (!selectedPaymentMethod) {
-      alert("Please select a payment method before enrolling.");
-    } else {
-      alert("Enrollment successful!");
+  // Updated handleEnroll function to make the API call with token
+  const handleEnroll = async () => {
+    try {
+      const enrollmentData = {
+        username: loggedInUsername,
+        role: localStorage.getItem("role"), // Send the user's role with enrollment data
+        courseTitle: course.courseTitle,
+        instructor: course.instructor,
+      };
+
+      const response = await axios.post(
+        "http://localhost:8080/api/makeEnroll",
+        enrollmentData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        if (response.data === "User is already enrolled in this course.") {
+          alert("Already enrolled");
+        } else {
+          alert("Successfully enrolled");
+        }
+        console.log(response.data);
+      } else {
+        alert("Failed to enroll. Please try again.");
+      }
+    } catch (error) {
+      console.error("Enrollment Error:", error);
+      if (error.response && error.response.status === 401) {
+        alert("Unauthorized. Please log in again.");
+      } else {
+        alert("An error occurred during enrollment.");
+      }
     }
   };
 
@@ -154,7 +189,6 @@ const EnrollmentUser = () => {
 
       {/* Right Side: About Us Section */}
       <div className="flex items-center justify-center min-h-[500px]">
-        {/* Image Section */}
         <div className="relative w-64 h-64 bg-yellow-700 flex items-center justify-center rounded-md">
           <img
             src={TeacherImage}
@@ -163,7 +197,6 @@ const EnrollmentUser = () => {
           />
         </div>
 
-        {/* Content Section */}
         <div className="ml-10">
           <h2 className="text-3xl font-bold mb-4">About Instructor Details</h2>
           <p className="text-gray-700 mb-6 max-w-md">

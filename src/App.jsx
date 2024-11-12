@@ -17,6 +17,7 @@ import EnrollmentUser from "./user/Page/EnrollmentUser/EnrollmentUser";
 import TeacherSection from "./user/Page/HomePage/TeacherSection";
 import EsewaPayment from "./user/Page/EsewaPayment/EsewaPayment";
 import UserAdmin from "./admin/Pages/UserAdmin";
+import EnrollmentAdmin from "./admin/Pages/EnrollmentAdmin";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
             <Route path="teacheradmin" element={<TeacherAdmin />} />
             <Route path="settingadmin" element={<SettingAdmin />} />
             <Route path="useradmin" element={<UserAdmin />} />
+            <Route path="enrollmentadmin" element={<EnrollmentAdmin />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -15,10 +15,12 @@ const Header = () => {
 
   // Get userInfo and role from the context
   const [userInfo, fetchUserInfo, role] = useContext(UserContext);
+  localStorage.setItem("role", role);
+  const rrr = localStorage.getItem(role);
+  // console.log("machikne", rrr);
 
   // Print userInfo and role to the console for debugging
   console.log("UserInfo:", userInfo);
-  console.log("Role:", role);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
@@ -40,6 +42,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
+    localStorage.removeItem("role");
     setUsername(null);
     navigate("/");
   };
