@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
-// import AddCategoryModal from "../Model/AddCategoryModal";
+import AddCategoryModal from "../Model/CategoryModel/AddCategoryModel";
+import EditCategoryModal from "../Model/CategoryModel/EditCategoryModel"; // Import the edit modal
 import {
   fetchCategories,
   fetchCategoryById,
@@ -12,6 +13,8 @@ const CategoryAdmin = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false); // State for edit modal visibility
+  const [selectedCategory, setSelectedCategory] = useState(null); // State for selected category
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -37,17 +40,26 @@ const CategoryAdmin = () => {
   const handleEditCategory = async (id) => {
     try {
       const categoryData = await fetchCategoryById(id);
-      console.log("Edit category data:", categoryData);
-      // Add logic to open edit modal and handle updates
+      setSelectedCategory(categoryData); // Set the selected category data
+      setShowEditModal(true); // Open the edit modal
     } catch (error) {
       console.error("Error fetching category by ID:", error);
     }
   };
 
+  const handleCategoryUpdate = (updatedCategory) => {
+    setCategories(
+      categories.map((category) =>
+        category.id === updatedCategory.id ? updatedCategory : category
+      )
+    );
+    setShowEditModal(false);
+  };
+
   const handleDeleteCategory = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8080/api/users/category/${id}`,
+        `http://localhost:8080/api/users/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -124,6 +136,16 @@ const CategoryAdmin = () => {
           isOpen={showAddModal}
           onClose={() => setShowAddModal(false)}
           onAddCategory={handleAddCategory}
+        />
+      )}
+
+      {showEditModal && selectedCategory && (
+        <EditCategoryModal
+          isOpen={showEditModal}
+          onClose={() => setShowEditModal(false)}
+          categoryId={selectedCategory.id}
+          initialData={selectedCategory}
+          onEditCategory={handleCategoryUpdate}
         />
       )}
     </div>

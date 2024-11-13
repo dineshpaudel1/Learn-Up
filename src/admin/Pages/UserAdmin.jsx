@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import { fetchAllUserInfo } from "../../components/Apis/UserApi"; // Import the fetch function
 import placeholderPhoto from "../../assets/teacher.webp"; // Placeholder image
-import AddUserModal from "../Model/UserModel/AddUserModel";
+import AddUserModal from "../Model/AddUserModel";
+import EditModal from "../Model/EditUserModel"; // Assuming EditModal is in the same directory
 
 const UserAdmin = () => {
   const [users, setUsers] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false); // State to control AddUserModal visibility
+  const [showEditModal, setShowEditModal] = useState(false); // State to control EditModal visibility
+  const [userToEdit, setUserToEdit] = useState(null); // Store the user to be edited
 
   // Fetch user data on component mount
   useEffect(() => {
@@ -33,6 +36,12 @@ const UserAdmin = () => {
 
     getUsers();
   }, []);
+
+  // Handle opening the Edit Modal and passing the user data to be edited
+  const openEditModal = (user) => {
+    setUserToEdit(user); // Set the user to be edited
+    setShowEditModal(true); // Show the EditModal
+  };
 
   return (
     <div className="p-10">
@@ -81,7 +90,10 @@ const UserAdmin = () => {
                 </td>
 
                 <td className="px-4 py-2 flex space-x-2">
-                  <button className="bg-blue-500 text-white p-2 rounded flex items-center">
+                  <button
+                    onClick={() => openEditModal(user)} // Open the EditModal with user data
+                    className="bg-blue-500 text-white p-2 rounded flex items-center"
+                  >
                     <FaEdit className="mr-1" /> Edit
                   </button>
                   <button className="bg-red-500 text-white p-2 rounded flex items-center">
@@ -93,10 +105,21 @@ const UserAdmin = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Show AddUserModal if state is true */}
       {showAddModal && (
         <AddUserModal
           isOpen={showAddModal}
           onClose={() => setShowAddModal(false)}
+        />
+      )}
+
+      {/* Show EditModal if state is true */}
+      {showEditModal && userToEdit && (
+        <EditModal
+          isOpen={showEditModal}
+          onClose={() => setShowEditModal(false)}
+          user={userToEdit} // Pass the selected user data to EditModal
         />
       )}
     </div>

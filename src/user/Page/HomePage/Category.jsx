@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchCategories } from "../../../components/Apis/CategoryApi"; // Import from CategoryApi.jsx
+import { fetchCategories } from "../../../components/Apis/CategoryApi";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
@@ -27,20 +27,26 @@ const Categories = () => {
         <div className="mx-auto flex mt-4 w-16 h-1 bg-[#8594] rounded-full"></div>
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-[70px] w-[1200px] h-[200px] mt-6">
-        {categories.map((category) => (
-          <div
-            key={category.id}
-            className="flex flex-col items-center p-4 border rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300"
-          >
-            <img
-              src={`http://localhost:8080/${category.categoryPhoto}`}
-              alt={category.categoryName}
-              className="w-24 h-24 object-contain mb-4"
-            />
-            <h3 className="text-lg font-semibold">{category.categoryName}</h3>
-          </div>
-        ))}
+      {/* Scrollable container with fixed height and width */}
+      <div className="w-[1200px] h-[400px] overflow-y-scroll mt-6 px-[70px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {categories.map((category) => (
+            <div
+              key={category.id}
+              className="flex flex-col items-center p-4 border rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300"
+              style={{ width: "250px", height: "250px" }} // Optional fixed size for each category card
+            >
+              <img
+                src={`http://localhost:8080/${category.categoryPhoto}`}
+                alt={category.categoryName}
+                className="w-24 h-24 object-contain mb-4"
+              />
+              <h3 className="text-lg font-semibold text-center">
+                {category.categoryName}
+              </h3>
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );

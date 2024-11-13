@@ -3,7 +3,6 @@ import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import axios from "axios";
 import AddUserModal from "../Model/AddUserModel";
 
-// import AddUserModel from "../Model/AddUserModel";
 const EnrollmentAdmin = () => {
   const [enrolledUsers, setEnrolledUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,8 +47,28 @@ const EnrollmentAdmin = () => {
     console.log("Edit user with ID:", id);
   };
 
-  const handleDeleteUser = (id) => {
-    setEnrolledUsers(enrolledUsers.filter((user) => user.id !== id));
+  const handleDeleteUser = async (id) => {
+    try {
+      // Make DELETE request to the API
+      const response = await axios.delete(
+        `http://localhost:8080/api/deleteEnroll/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        // If the deletion is successful, remove the user from the state
+        setEnrolledUsers(enrolledUsers.filter((user) => user.id !== id));
+      } else {
+        setError("Failed to delete user.");
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      setError("An error occurred while deleting the user.");
+    }
   };
 
   if (loading) return <p>Loading enrolled users...</p>;
@@ -57,16 +76,6 @@ const EnrollmentAdmin = () => {
 
   return (
     <div className="p-10">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold">Enrolled Users</h2>
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="bg-green-500 text-white p-3 rounded flex items-center"
-        >
-          <FaPlus className="mr-2" /> Make Enroll
-        </button>
-      </div>
-
       <div className="overflow-x-auto w-full max-w-[930px] max-h-[430px]">
         <table className="min-w-full table-auto bg-white shadow-md rounded-lg">
           <thead>
@@ -86,12 +95,6 @@ const EnrollmentAdmin = () => {
                 <td className="px-4 py-2">{user.instructor}</td>
                 <td className="px-4 py-2">{user.role}</td>
                 <td className="px-4 py-2 flex space-x-2">
-                  <button
-                    onClick={() => handleEditUser(user.id)}
-                    className="bg-blue-500 text-white p-2 rounded flex items-center"
-                  >
-                    <FaEdit className="mr-1" /> Edit
-                  </button>
                   <button
                     onClick={() => handleDeleteUser(user.id)}
                     className="bg-red-500 text-white p-2 rounded flex items-center"

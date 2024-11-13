@@ -1,13 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { fetchUserInfo } from "../../../components/Apis/UserApi"; // adjust path as needed
+import {
+  fetchUserInfo,
+  updatePassword,
+  updateUserInfo,
+  updateUserPhoto,
+} from "../../../components/Apis/UserApi"; // Adjust the path as needed
+
+const BASE_URL = "http://localhost:8080";
 
 const Profile = () => {
-  const [userInfo, setUserInfo] = useState({});
+  const [profile, setProfile] = useState({
+    fullName: "",
+    username: "",
+    email: "",
+    contact: "",
+    photo: "",
+  });
+  const [passwords, setPasswords] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch profile data on mount
   useEffect(() => {
-    const getUserInfo = async () => {
+    const fetchProfileData = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
         setError("No token found");
@@ -17,7 +36,10 @@ const Profile = () => {
 
       try {
         const data = await fetchUserInfo(token);
-        setUserInfo(data);
+        setProfile({
+          ...data,
+          photo: `${BASE_URL}${data.photo}`,
+        });
       } catch (error) {
         setError(error.message);
       } finally {
@@ -25,50 +47,212 @@ const Profile = () => {
       }
     };
 
-    getUserInfo();
+    fetchProfileData();
   }, []);
 
   if (loading) return <div className="text-center">Loading...</div>;
   if (error)
     return <div className="text-center text-red-600">Error: {error}</div>;
-  if (!userInfo)
-    return <div className="text-center">No user data available</div>;
+
+  const handleProfileChange = (e) => {
+    setProfile({ ...profile, [e.target.name]: e.target.value });
+  };
+
+  const handlePasswordChange = (e) => {
+    setPasswords({ ...passwords, [e.target.name]: e.target.value });
+  };
+
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfile((prevProfile) => ({
+        ...prevProfile,
+        photo: URL.createObjectURL(file),
+      }));
+    }
+  };
+
+  // Submit updated profile information
+  const handleProfileSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+      await updateUserInfo(profile, token);
+      alert("Profile updated successfully!");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Failed to update profile. Please try again.");
+    }
+  };
+
+  // Upload new profile photo
+  const handlePhotoSubmit = async (e) => {
+    e.preventDefault();
+    const file = document.querySelector('input[type="file"]').files[0];
+    if (file) {
+      try {
+        const token = localStorage.getItem("token");
+        await updateUserPhoto(file, token);
+        alert("Profile photo updated successfully!");
+      } catch (error) {
+        console.error("Error updating photo:", error);
+        alert("Failed to update profile photo. Please try again.");
+      }
+    }
+  };
+
+  // Submit password change
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    if (passwords.newPassword !== passwords.confirmPassword) {
+      alert("New passwords do not match!");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      await updatePassword(
+        profile.id,
+        passwords.currentPassword,
+        passwords.newPassword,
+        token
+      );
+      alert("Password updated successfully!");
+    } catch (error) {
+      console.error("Error updating password:", error);
+      alert("Failed to update password. Please try again.");
+    }
+  };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-4 text-center">Profile</h1>
-      <div className="flex justify-center mb-4">
-        <img
-          src={"http://localhost:8080" + userInfo.name}
-          alt="User Profile"
-          className="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
-        />
+    <div className="w-full h-auto p-10 max-w-screen-lg mx-auto overflow-hidden mt-10">
+      <h2 className="text-3xl font-bold mb-6">Profile Settings</h2>
+
+      {/* Profile Settings */}
+      <div className="mb-10">
+        <h3 className="text-2xl mb-4">Profile Settings</h3>
+        <form onSubmit={handleProfileSubmit}>
+          <div className="mb-4">
+            <label className="block text-sm font-medium">Profile Photo</label>
+            <div className="flex items-center space-x-4">
+              <img
+                src={"http://localhost:8080" + profile.name}
+                alt={profile.fullName}
+                className="w-20 h-20 object-cover rounded"
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handlePhotoUpload}
+                className="w-full p-2 border rounded"
+              />
+              <button
+                onClick={handlePhotoSubmit}
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                Update Photo
+              </button>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium">Username</label>
+            <input
+              type="text"
+              name="username"
+              value={profile.username}
+              onChange={handleProfileChange}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium">Full Name</label>
+            <input
+              type="text"
+              name="fullName"
+              value={profile.fullName}
+              onChange={handleProfileChange}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={profile.email}
+              onChange={handleProfileChange}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium">Contact</label>
+            <input
+              type="text"
+              name="contact"
+              value={profile.contact}
+              onChange={handleProfileChange}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Update Profile
+          </button>
+        </form>
       </div>
-      <div className="space-y-4">
-        <p>
-          <strong className="block text-gray-600">Full Name:</strong>
-          <span className="text-gray-800">{userInfo.fullName || "N/A"}</span>
-        </p>
-        <p>
-          <strong className="block text-gray-600">Username:</strong>
-          <span className="text-gray-800">{userInfo.username || "N/A"}</span>
-        </p>
-        <p>
-          <strong className="block text-gray-600">Email:</strong>
-          <span className="text-gray-800">{userInfo.email || "N/A"}</span>
-        </p>
-        <p>
-          <strong className="block text-gray-600">Contact:</strong>
-          <span className="text-gray-800">{userInfo.contact || "N/A"}</span>
-        </p>
-      </div>
-      <div className="flex justify-center mt-6">
-        <button
-          className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none"
-          onClick={() => alert("Update profile feature coming soon!")}
-        >
-          Update Profile
-        </button>
+
+      {/* Password Change */}
+      <div className="mb-10">
+        <h3 className="text-2xl mb-4">Change Password</h3>
+        <form onSubmit={handlePasswordSubmit}>
+          <div className="mb-4">
+            <label className="block text-sm font-medium">
+              Current Password
+            </label>
+            <input
+              type="password"
+              name="currentPassword"
+              value={passwords.currentPassword}
+              onChange={handlePasswordChange}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium">New Password</label>
+            <input
+              type="password"
+              name="newPassword"
+              value={passwords.newPassword}
+              onChange={handlePasswordChange}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium">
+              Confirm New Password
+            </label>
+            <input
+              type="password"
+              name="confirmPassword"
+              value={passwords.confirmPassword}
+              onChange={handlePasswordChange}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Update Password
+          </button>
+        </form>
       </div>
     </div>
   );

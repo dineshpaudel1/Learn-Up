@@ -12,7 +12,6 @@ const Home = () => {
       <Courses />
       <AboutInstructor />
       <Category />
-      <TeacherSection />
     </div>
   );
 };

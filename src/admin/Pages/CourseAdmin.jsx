@@ -114,7 +114,9 @@ const CourseAdmin = () => {
                 <td className="px-4 py-2 whitespace-nowrap">
                   {course.category}
                 </td>
-                <td className="px-4 py-2 whitespace-nowrap">${course.price}</td>
+                <td className="px-4 py-2 whitespace-nowrap">
+                  NPR {course.price}
+                </td>
                 <td className="px-4 py-2 whitespace-nowrap">
                   {course.instructor}
                 </td>
