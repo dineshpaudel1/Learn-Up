@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
-import { updateCourse } from "../../components/Apis/CourseApi";
+import { updateCourse } from "../../../components/Apis/CourseApi";
 
 const EditCourseModal = ({ isOpen, course, onClose }) => {
   const accessToken = localStorage.getItem("token");
@@ -12,6 +12,7 @@ const EditCourseModal = ({ isOpen, course, onClose }) => {
     rating: 0,
     instructor: "", // Added instructor field
     language: "", // Added language field
+    videoLink: "",
   });
   const [thumbnail, setThumbnail] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -26,6 +27,7 @@ const EditCourseModal = ({ isOpen, course, onClose }) => {
         rating: course.rating || 0,
         instructor: course.instructor || "", // Pre-fill instructor
         language: course.language || "", // Pre-fill language
+        videoLink: course.videoLink || "",
       });
     } else {
       setCourseData({
@@ -36,6 +38,7 @@ const EditCourseModal = ({ isOpen, course, onClose }) => {
         rating: 0,
         instructor: "", // Reset instructor
         language: "", // Reset language
+        videoLink: "",
       });
     }
   }, [course]);
@@ -60,7 +63,7 @@ const EditCourseModal = ({ isOpen, course, onClose }) => {
         accessToken
       );
       console.log("Course updated:", updatedCourse);
-      onClose();
+      onClose(); // Close the modal after successful update
     } catch (error) {
       console.error("Error updating course:", error);
       onClose();
@@ -185,6 +188,22 @@ const EditCourseModal = ({ isOpen, course, onClose }) => {
               value={courseData.language}
               onChange={handleInputChange}
               required
+              className="w-full mt-1 p-2 border rounded"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="videoLink"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Video Link
+            </label>
+            <input
+              id="videoLink"
+              name="videoLink"
+              value={courseData.videoLink}
+              onChange={handleInputChange} // This updates the videoLink field in the state
               className="w-full mt-1 p-2 border rounded"
             />
           </div>

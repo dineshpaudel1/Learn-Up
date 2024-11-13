@@ -132,13 +132,22 @@ const Header = () => {
                     </Link>
                   )}
                   {role === "ROLE_USER" && (
-                    <Link
-                      to="/profile"
-                      className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                      onClick={closeDropdown}
-                    >
-                      Profile
-                    </Link>
+                    <>
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                        onClick={closeDropdown}
+                      >
+                        Profile
+                      </Link>
+                      <Link
+                        to="mycourse"
+                        className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                        onClick={closeDropdown}
+                      >
+                        My Courses
+                      </Link>
+                    </>
                   )}
                   <button
                     onClick={() => {

@@ -12,13 +12,14 @@ import Dashboard from "./admin/Pages/Dashboard";
 import Coursedetail from "./user/Page/CourseDetail/Coursedetail";
 import CourseAdmin from "./admin/Pages/CourseAdmin";
 import SettingAdmin from "./admin/Pages/SettingAdmin";
-import TeacherAdmin from "./admin/Pages/TeacherAdmin";
 import EnrollmentUser from "./user/Page/EnrollmentUser/EnrollmentUser";
 import TeacherSection from "./user/Page/HomePage/TeacherSection";
 import EsewaPayment from "./user/Page/EsewaPayment/EsewaPayment";
 import UserAdmin from "./admin/Pages/UserAdmin";
 import EnrollmentAdmin from "./admin/Pages/EnrollmentAdmin";
 import CategoryInfo from "./user/Page/CategoryInfo/CategoryInfo";
+import CategoryAdmin from "./admin/Pages/CategoryAdmin";
+import MyCourse from "./user/Page/MyCourse/MyCourse";
 
 function App() {
   return (
@@ -35,7 +36,8 @@ function App() {
             <Route path="enrollmentuser" element={<EnrollmentUser />} />
             <Route path="sewa" element={<EsewaPayment />} />
             <Route path="teachersection" element={<TeacherSection />} />
-            <Route path="/categories/:id" element={<CategoryInfo />} />{" "}
+            <Route path="/categories/:id" element={<CategoryInfo />} />
+            <Route path="mycourse" element={<MyCourse />} />
           </Route>
 
           {/* Admin routes */}
@@ -43,10 +45,10 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="courseadmin" element={<CourseAdmin />} />
-            <Route path="teacheradmin" element={<TeacherAdmin />} />
             <Route path="settingadmin" element={<SettingAdmin />} />
             <Route path="useradmin" element={<UserAdmin />} />
             <Route path="enrollmentadmin" element={<EnrollmentAdmin />} />
+            <Route path="categoryadmin" element={<CategoryAdmin />} />
           </Route>
         </Routes>
       </BrowserRouter>

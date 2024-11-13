@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import { fetchAllUserInfo } from "../../components/Apis/UserApi"; // Import the fetch function
 import placeholderPhoto from "../../assets/teacher.webp"; // Placeholder image
-import AddUserModal from "../Model/AddUserModel";
+import AddUserModal from "../Model/UserModel/AddUserModel";
 
 const UserAdmin = () => {
   const [users, setUsers] = useState([]);
@@ -95,7 +95,7 @@ const UserAdmin = () => {
       </div>
       {showAddModal && (
         <AddUserModal
-          isOpen={showAddModal} // Pass as isOpen
+          isOpen={showAddModal}
           onClose={() => setShowAddModal(false)}
         />
       )}

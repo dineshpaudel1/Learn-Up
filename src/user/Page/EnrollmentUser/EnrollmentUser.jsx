@@ -13,12 +13,7 @@ const EnrollmentUser = () => {
   const loggedInUsername = localStorage.getItem("username") || "Not available";
   const token = localStorage.getItem("token"); // Retrieve the access token
   const userrole = localStorage.getItem("role"); // Get the role from localStorage
-
-  const videoLinks = {
-    "The Complete Python Bootcamp From Zero to Hero in Python":
-      "https://www.youtube.com/embed/rfscVS0vtbw",
-    "C#Course": "https://www.youtube.com/embed/YrtFtdTTfv0",
-  };
+  const id = localStorage.getItem("id");
 
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
@@ -37,6 +32,7 @@ const EnrollmentUser = () => {
   const handleEnroll = async () => {
     try {
       const enrollmentData = {
+        userId: id,
         username: loggedInUsername,
         role: localStorage.getItem("role"), // Send the user's role with enrollment data
         courseTitle: course.courseTitle,
@@ -73,8 +69,6 @@ const EnrollmentUser = () => {
     }
   };
 
-  const videoLink = videoLinks[course?.courseTitle] || null;
-
   return (
     <div className="bg-gray-100 p-8 mt-10 flex space-x-8">
       {/* Left Side: Enrollment Content */}
@@ -84,12 +78,12 @@ const EnrollmentUser = () => {
           <div className="mb-4">
             <div className="mt-4">
               <p className="font-semibold">Course Preview</p>
-              {videoLink ? (
+              {course && course.videoLink ? (
                 <iframe
                   width="100%"
                   height="200"
-                  src={videoLink}
-                  title="YouTube video"
+                  src={course.videoLink}
+                  title="Course Video"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen

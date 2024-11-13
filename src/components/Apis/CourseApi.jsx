@@ -86,6 +86,8 @@ export const updateCourse = async (
       }
     );
 
+
+
     if (!response.ok) {
       const errorMessage = await response.text();
       throw new Error(errorMessage);

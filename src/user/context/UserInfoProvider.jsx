@@ -5,8 +5,10 @@ const UserContext = createContext();
 export const UserInfoProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [role, setRole] = useState("");
+  const [id, setId] = useState();
 
   const token = localStorage.getItem("token");
+  localStorage.setItem("id", id);
 
   const fetchUserInfo = async () => {
     try {
@@ -25,6 +27,7 @@ export const UserInfoProvider = ({ children }) => {
       const data = await response.json();
       // console.log(data);
       setUserInfo(data);
+      setId(data.id);
       setRole(data.roles.name);
     } catch (err) {
       console.log(err.message);

@@ -5,8 +5,8 @@ import {
   deleteCourse,
   updateCourse,
 } from "../../components/Apis/CourseApi";
-import AddCourseModal from "../Model/AddCourseModel";
-import EditCourseModal from "../Model/EditCourseModel";
+import AddCourseModal from "../Model/CourseModel/AddCourseModel";
+import EditCourseModal from "../Model/CourseModel/EditCourseModel";
 const CourseAdmin = () => {
   const [courses, setCourses] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);

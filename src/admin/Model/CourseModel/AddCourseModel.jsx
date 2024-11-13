@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa"; // Import close icon
-import { addCourse } from "../../components/Apis/CourseApi"; // Import the addCourse function
+import { addCourse } from "../../../components/Apis/CourseApi"; // Import the addCourse function
 
 const AddCourseModal = ({ isOpen, onClose, refreshCourses }) => {
   const [courseTitle, setCourseTitle] = useState("");
@@ -11,6 +11,7 @@ const AddCourseModal = ({ isOpen, onClose, refreshCourses }) => {
   const [rating, setRating] = useState("");
   const [instructor, setInstructor] = useState("");
   const [language, setLanguage] = useState("");
+  const [videoLink, setvideoLink] = useState("");
   const [categories, setCategories] = useState([]); // State to hold categories
   const [loading, setLoading] = useState(true); // State for loading status
   const [error, setError] = useState(null); // State for error handling
@@ -55,6 +56,7 @@ const AddCourseModal = ({ isOpen, onClose, refreshCourses }) => {
       rating,
       instructor,
       language,
+      videoLink,
     };
 
     try {
@@ -169,6 +171,18 @@ const AddCourseModal = ({ isOpen, onClose, refreshCourses }) => {
               type="text"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
+              required
+              className="w-full mt-1 p-2 border rounded"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Video Link
+            </label>
+            <input
+              type="text"
+              value={videoLink}
+              onChange={(e) => setvideoLink(e.target.value)}
               required
               className="w-full mt-1 p-2 border rounded"
             />

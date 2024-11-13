@@ -83,6 +83,8 @@ const CourseDetail = () => {
             <p>{course.instructor || "No instructor specified."}</p>
             <h3 className="text-xl font-semibold mt-4">Language</h3>
             <p>{course.language || "No language specified."}</p>
+            <h3 className="text-xl font-semibold mt-4">Video Link</h3>
+            <p>{course.videoLink || "No language specified."}</p>
           </section>
 
           <aside className="lg:w-1/3 p-6 bg-gray-50 border-t lg:border-t-0 lg:border-l border-gray-200">
