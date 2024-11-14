@@ -77,6 +77,7 @@ const EnrollmentAdmin = () => {
   return (
     <div className="p-10">
       <div className="overflow-x-auto w-full max-w-[930px] max-h-[430px]">
+        <h1>Enrollments</h1>
         <table className="min-w-full table-auto bg-white shadow-md rounded-lg">
           <thead>
             <tr className="bg-gray-200 text-gray-700">

@@ -79,6 +79,26 @@ const Dashboard = () => {
         <p className="text-lg">{courseCount}</p>{" "}
         {/* Display the dynamic course count */}
       </div>
+      <div
+        className="bg-yellow-600 p-6 rounded-lg text-white text-center shadow-md cursor-pointer"
+        onClick={handleCategoryClick} // Add onClick handler
+      >
+        <FaChalkboardTeacher className="text-4xl mb-2 mx-auto" />{" "}
+        {/* Category Icon */}
+        <h2 className="text-2xl font-bold">Total Categories</h2>
+        <p className="text-lg">{categoryCount}</p>{" "}
+        {/* Display the dynamic category count */}
+      </div>
+      <div
+        className="bg-blue-600 p-6 rounded-lg text-white text-center shadow-md cursor-pointer"
+        onClick={handleEnrolledUserClick} // Add onClick handler
+      >
+        <FaClipboardList className="text-4xl mb-2 mx-auto" />{" "}
+        {/* Clipboard Icon */}
+        <h2 className="text-2xl font-bold">Enrolled Users</h2>
+        <p className="text-lg">{enrolledUserCount}</p>{" "}
+        {/* Display the dynamic enrolled user count */}
+      </div>
 
       {/* Total User */}
       <div
@@ -92,28 +112,8 @@ const Dashboard = () => {
       </div>
 
       {/* Enrolled User */}
-      <div
-        className="bg-blue-600 p-6 rounded-lg text-white text-center shadow-md cursor-pointer"
-        onClick={handleEnrolledUserClick} // Add onClick handler
-      >
-        <FaClipboardList className="text-4xl mb-2 mx-auto" />{" "}
-        {/* Clipboard Icon */}
-        <h2 className="text-2xl font-bold">Enrolled Users</h2>
-        <p className="text-lg">{enrolledUserCount}</p>{" "}
-        {/* Display the dynamic enrolled user count */}
-      </div>
 
       {/* Total Categories */}
-      <div
-        className="bg-yellow-600 p-6 rounded-lg text-white text-center shadow-md cursor-pointer"
-        onClick={handleCategoryClick} // Add onClick handler
-      >
-        <FaChalkboardTeacher className="text-4xl mb-2 mx-auto" />{" "}
-        {/* Category Icon */}
-        <h2 className="text-2xl font-bold">Total Categories</h2>
-        <p className="text-lg">{categoryCount}</p>{" "}
-        {/* Display the dynamic category count */}
-      </div>
     </div>
   );
 };
